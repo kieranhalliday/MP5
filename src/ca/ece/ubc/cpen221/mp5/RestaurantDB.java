@@ -7,11 +7,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import org.json.simple.JSONObject;
-
 // TODO: This class represents the Restaurant Database.
-// TODO: Set method on bottom, figure out how to parse json
-
 // Define the internal representation and
 // state the rep invariant and the abstraction function.
 
@@ -108,55 +104,241 @@ public class RestaurantDB {
 	 *            type of restaurant you are searching for
 	 * @return set, the set of all restaurants that match the search
 	 */
-	/*
-	 * public Set<Restaurant> query(String queryString) throws
-	 * IllegalArgumentException { // TODO: Implement this method // Write specs,
-	 * etc. // Parse query // compare to restaurants hashmap //Assuming
-	 * queryString is a valid argument
-	 * 
-	 * String sample = queryString; Set<Restaurant> set = new
-	 * HashSet<Restaurant>(); String name;
-	 * 
-	 * //Check location
-	 * 
-	 * if(sample.contains("in")){ //Get where the entry was int n=
-	 * sample.indexOf("in"); //Take off everything before it
-	 * sample.substring(n+2); //Take off everything after the close parens...
-	 * end of in query sample.split(")", 1);
-	 * 
-	 * for(int i=0;i<restaurants.size();i++){
-	 * if(restaurants.get(i).contains(sample)){ String str = restaurants.get(i);
-	 * JSONObject obj = new JSONObject(); //name = ob
-	 * 
-	 * 
-	 * 
-	 * int j=restaurants.get(i).indexOf("name");
-	 * restaurants.get(i).substring(j); restaurants.get(i).split(",", 1);
-	 * Restaurant temp = new Restaurant(restaurants.get(i).split(",", 1));
-	 * set.add(temp); } } }
-	 * 
-	 * 
-	 * 
-	 * return null; }
-	 */
+
+	// TODO Write specs, etc.
+	// Parse query compare to restaurants hashmap
+	// Assuming queryString is a valid argument
+	// Cannot handle || yet
+
+	public Set<Restaurant> query(String queryString) throws IllegalArgumentException {
+		// B and D are used for the range of the price and
+		// Rating, E is the price of the restaurant in the json file
+		int n, b = 0, d = 0, e = 0;
+
+		// Range of price and rating
+		int upperbounds, lowerbounds;
+		Parser p = new Parser();
+
+		String sample = queryString; // Need this to preserve the original query
+		Set<Restaurant> location = new HashSet<Restaurant>();
+		Set<Restaurant> categories = new HashSet<Restaurant>();
+		Set<Restaurant> names = new HashSet<Restaurant>();
+		Set<Restaurant> prices = new HashSet<Restaurant>();
+		Set<Restaurant> ratings = new HashSet<Restaurant>();
+		Set<Restaurant> result = new HashSet<Restaurant>();
+
+		// Check location
+
+		if (sample.contains("in")) { // Get where the entry was
+			n = sample.indexOf("in"); // Take off everything before it
+			sample.substring(n + 2); // Take off everything after the close
+			sample.split(")", 1); // parens...end of in query
+
+			for (int i = 0; i < restaurants.size(); i++) {
+				if (restaurants.get(i).contains(sample)) {
+					String k = p.getName(restaurants.get(i));
+					Restaurant temp = new Restaurant(k);
+					location.add(temp);
+				}
+			}
+		}
+
+		sample = queryString;
+
+		// Check categories
+
+		if (sample.contains("category")) {
+			n = sample.indexOf("category");
+			sample.substring(n + 10);
+			sample.split(")", 1);
+
+			for (int i = 0; i < restaurants.size(); i++) {
+				if (restaurants.get(i).contains(sample)) {
+					String k = p.getName(restaurants.get(i));
+					Restaurant temp = new Restaurant(k);
+					categories.add(temp);
+				}
+			}
+
+		}
+		sample = queryString;
+
+		// Check name
+
+		if (sample.contains("name")) {
+			n = sample.indexOf("name");
+			sample.substring(n + 6);
+			sample.split(")", 1);
+
+			for (int i = 0; i < restaurants.size(); i++) {
+				if (restaurants.get(i).contains(sample)) {
+					String k = p.getName(restaurants.get(i));
+					Restaurant temp = new Restaurant(k);
+					names.add(temp);
+				}
+			}
+
+		}
+		sample = queryString;
+
+		//  needs to be for a range of ints
+
+		if (sample.contains("rating")) {
+			n = sample.indexOf("rating");
+			sample.substring(n + 8);
+			sample.split(")", 1);
+			String sample1 = sample;
+
+			String a = sample.substring(0, 0);
+			String c = sample1.substring(3);
+
+			if (a.contains("1")) {
+				b = 1;
+			} else if (a.contains("1")) {
+				b = 2;
+			} else if (a.contains("1")) {
+				b = 3;
+			} else if (a.contains("1")) {
+				b = 4;
+			} else if (a.contains("1")) {
+				b = 5;
+			}
+			if (c.contains("1")) {
+				d = 1;
+			} else if (c.contains("2")) {
+				d = 2;
+			} else if (c.contains("3")) {
+				d = 3;
+			} else if (c.contains("4")) {
+				d = 4;
+			} else if (c.contains("5")) {
+				d = 5;
+			}
+
+			if (b > d) {
+				upperbounds = b;
+				lowerbounds = d;
+			} else {
+				upperbounds = d;
+				lowerbounds = b;
+			}
+
+			for (int i = 0; i < restaurants.size(); i++) {
+				int size = restaurants.get(i).length();
+				String num = restaurants.get(i).substring(size - 2, size - 2);
+				if (num.contains("1")) {
+					e = 1;
+				} else if (num.contains("2")) {
+					e = 2;
+				} else if (num.contains("3")) {
+					e = 3;
+				} else if (num.contains("4")) {
+					e = 4;
+				} else if (num.contains("5")) {
+					e = 5;
+				}
+				if (e <= upperbounds && e >= lowerbounds) {
+					String k = p.getName(restaurants.get(i));
+					Restaurant temp = new Restaurant(k);
+					ratings.add(temp);
+				}
+			}
+
+		}
+
+		sample = queryString;
+
+		//  Check price, needs to be for a range of ints
+
+		if (sample.contains("price")) {
+			n = sample.indexOf("price");
+			sample.substring(n + 7);
+			sample.split(")", 1);
+			String sample1 = sample;
+
+			String a = sample.substring(0, 0);
+			String c = sample1.substring(3);
+
+			if (a.contains("1")) {
+				b = 1;
+			} else if (a.contains("1")) {
+				b = 2;
+			} else if (a.contains("1")) {
+				b = 3;
+			} else if (a.contains("1")) {
+				b = 4;
+			} else if (a.contains("1")) {
+				b = 5;
+			}
+			if (c.contains("1")) {
+				d = 1;
+			} else if (c.contains("2")) {
+				d = 2;
+			} else if (c.contains("3")) {
+				d = 3;
+			} else if (c.contains("4")) {
+				d = 4;
+			} else if (c.contains("5")) {
+				d = 5;
+			}
+
+			if (b > d) {
+				upperbounds = b;
+				lowerbounds = d;
+			} else {
+				upperbounds = d;
+				lowerbounds = b;
+			}
+
+			for (int i = 0; i < restaurants.size(); i++) {
+				int size = restaurants.get(i).length();
+				String num = restaurants.get(i).substring(size - 2, size - 2);
+				if (num.contains("1")) {
+					e = 1;
+				} else if (num.contains("2")) {
+					e = 2;
+				} else if (num.contains("3")) {
+					e = 3;
+				} else if (num.contains("4")) {
+					e = 4;
+				} else if (num.contains("5")) {
+					e = 5;
+				}
+				if (e <= upperbounds && e >= lowerbounds) {
+					String k = p.getName(restaurants.get(i));
+					Restaurant temp = new Restaurant(k);
+					prices.add(temp);
+				}
+			}
+
+		}
+
+		// TODO add all the ones that fullfill all request to result
+
+		return result;
+
+	}
+
 	public static void addRestaurant(String request) {
 		restaurants.put(restaurants.size(), request);
 	}
 
 	public static void addUser(String request) {
-		users.put(restaurants.size(), request);
+		users.put(users.size(), request);
 
 	}
 
 	public static void addReview(String request) {
-		reviews.put(restaurants.size(), request);
+		reviews.put(reviews.size(), request);
 
 	}
 
 	public static String getRestaurant(String ID) {
+		Parser p = new Parser();
+
 		for (int i = 0; i < restaurants.size(); i++) {
 			if (restaurants.get(i).contains(ID)) {
-				return restaurants.get(i);
+				return p.getName(restaurants.get(i));
 			}
 		}
 		return ("Restaurant Not Found");
@@ -165,30 +347,41 @@ public class RestaurantDB {
 	public static String getReview(String name) {
 
 		String ID = null;
-		int start;
+		int start, end;
+		String review;
 
 		for (int i = 0; i < restaurants.size(); i++) {
 			if (restaurants.get(i).contains(name)) {
 				ID = restaurants.get(i);
-				start = ID.indexOf(name);
-				ID.substring(start, name.length());
+				start = ID.indexOf("id");
+				ID.substring(start + 6, start + 28);
 			}
 		}
 		for (int j = 0; j < reviews.size(); j++) {
 			int randomnum = randInt(1, 0);
 			if (reviews.get(j).contains(ID) && randomnum > 0.66) {
-				return reviews.get(j);
-			}
+				start = ID.indexOf("text:");
+				ID.substring(start + 9);
+				end = ID.indexOf("stars");
+				review = ID.substring(0, end - 4);
 
-			// Try twice for good measure
-			for (int k = 0; j < reviews.size(); j++) {
-				int randomnum1 = randInt(1, 0);
-				if (reviews.get(k).contains(ID) && randomnum1 > 0.66) {
-					return reviews.get(k);
-				}
-
+				return review;
 			}
 		}
+
+		// Try twice for good measure
+		for (int k = 0; k < reviews.size(); k++) {
+			int randomnum = randInt(1, 0);
+			if (reviews.get(k).contains(ID) && randomnum > 0.66) {
+				start = ID.indexOf("text:");
+				ID.substring(start + 9);
+				end = ID.indexOf("stars");
+				review = ID.substring(0, end - 4);
+
+				return review;
+			}
+		}
+
 		return "Review not Found";
 	}
 
@@ -198,5 +391,32 @@ public class RestaurantDB {
 		int randomNum = rand.nextInt((max - min) + 1) + min;
 
 		return randomNum;
+	}
+
+	public static int Restaurantsize() {
+		return restaurants.size();
+	}
+
+	public static int Reviewsize() {
+		return reviews.size();
+	}
+
+	public static int Usersize() {
+		return users.size();
+	}
+
+	public static HashMap<Integer, String> getRes() {
+		return restaurants;
+
+	}
+
+	public static HashMap<Integer, String> getReviews() {
+		return reviews;
+
+	}
+
+	public static HashMap<Integer, String> getUsers() {
+		return users;
+
 	}
 }

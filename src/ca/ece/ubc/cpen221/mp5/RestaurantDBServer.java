@@ -14,8 +14,11 @@ import java.net.Socket;
 public class RestaurantDBServer implements Runnable {
 
 	private int port;
+	@SuppressWarnings("unused")
 	private String filename1;
+	@SuppressWarnings("unused")
 	private String filename2;
+	@SuppressWarnings("unused")
 	private String filename3;
 
 	/**
@@ -36,8 +39,8 @@ public class RestaurantDBServer implements Runnable {
 	}
 
 	/**
-	 * This method starts the socket and server
-	 * It is what runs while the server is running
+	 * This method starts the socket and server It is what runs while the server
+	 * is running
 	 */
 
 	public void run() {
@@ -49,7 +52,6 @@ public class RestaurantDBServer implements Runnable {
 			while (true) {
 				Socket sock = ssocket.accept();
 				new Thread(new RestaurantDBServer(port, "restaurant.json", "reviews.json", "users.json")).start();
-				
 
 				// Prints output stream
 				PrintWriter out = new PrintWriter(sock.getOutputStream(), true);
@@ -61,7 +63,6 @@ public class RestaurantDBServer implements Runnable {
 				// Initiate conversation with client
 				Protocol protocol = new Protocol();
 
-				
 				// Takes an input line and decides what the output should be
 				while ((inputLine = in.readLine()) != null) {
 					outputLine = protocol.processInput(inputLine);

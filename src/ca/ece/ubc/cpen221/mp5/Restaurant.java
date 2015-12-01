@@ -5,6 +5,7 @@ package ca.ece.ubc.cpen221.mp5;
 
 public class Restaurant {
 
+	@SuppressWarnings("unused")
 	private String name;
 
 	// Abstraction Function: Each instance of this class represents a restaurant
