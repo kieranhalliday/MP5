@@ -5,14 +5,11 @@ public class Protocol {
 	/**
 	 * This method is what takes a client's request and formulates the correct
 	 * response
-	 * 
 	 * @param request
 	 * @return The String to be given to the client
 	 */
 
 	public String processInput(String request) {
-		// TODO This is where we decide if it's a valid argument
-		// TODO implement this class
 		String name;
 		String result;
 		String businessID;

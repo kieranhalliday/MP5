@@ -2,6 +2,12 @@ package ca.ece.ubc.cpen221.mp5;
 
 public class Parser {
 
+	/**
+	 * 
+	 * @param jsonString
+	 * @return A string that is the name of the restaurant whose
+	 *  jsonRepresentation in the DB is the param
+	 */
 	public String getName(String jsonString) {
 		String name = null;
 		int start, end;
@@ -19,6 +25,12 @@ public class Parser {
 
 	}
 
+	/**
+	 * 
+	 * @param name
+	 * @return A string that is the ID of the restaurant whose
+	 *  jsonRepresentation in the DB is the param
+	 */
 	public String getID(String name) {
 		String ID = null;
 		int start;

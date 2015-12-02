@@ -11,11 +11,18 @@ import java.util.Set;
 // Define the internal representation and
 // state the rep invariant and the abstraction function.
 
+/**
+ * 	Rep Invariant: A Hashmap of Integers and Strings, the Strings must be in JSON format
+ * 
+ *  Abstraction Function: Each Hashmap represents either a numbered lists of all the restaurants, reviews or users
+ */
+
 public class RestaurantDB {
 	private static HashMap<Integer, String> restaurants;
 	private static HashMap<Integer, String> reviews;
 	private static HashMap<Integer, String> users;
 
+	
 	/**
 	 * Create a database from the Yelp dataset given the names of three files:
 	 * <ul>
@@ -38,7 +45,7 @@ public class RestaurantDB {
 	 */
 	public RestaurantDB(String restaurantJSONfilename, String reviewsJSONfilename, String usersJSONfilename) {
 		// Currently this method has one entry per every JSON entry, no
-		// seperation
+		// seperation of each field
 
 		String line = null;
 		int i = 0;
@@ -51,6 +58,7 @@ public class RestaurantDB {
 		RestaurantDB.reviews = reviews;
 		RestaurantDB.users = users;
 
+		// Create restaurant hashmap
 		try {
 			FileReader filereader = new FileReader(restaurantJSONfilename);
 			BufferedReader reader = new BufferedReader(filereader);
@@ -66,7 +74,10 @@ public class RestaurantDB {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		
+		
+		// Create reviews hashmap
+		// TODO In reviews sometimes there is a /n need to find new way to include the part after in same review
 		try {
 			FileReader filereader1 = new FileReader(reviewsJSONfilename);
 			BufferedReader reader1 = new BufferedReader(filereader1);
@@ -82,6 +93,7 @@ public class RestaurantDB {
 			e.printStackTrace();
 		}
 
+		//Create users hashmap
 		try {
 			FileReader filereader2 = new FileReader(usersJSONfilename);
 			BufferedReader reader2 = new BufferedReader(filereader2);
@@ -318,21 +330,39 @@ public class RestaurantDB {
 		return result;
 
 	}
-
+	
+	/**
+	 * @modifies RestaurantDB.restaurants by adding a new restaurant
+	 * @param request
+	 */
 	public static void addRestaurant(String request) {
 		restaurants.put(restaurants.size(), request);
 	}
 
+	/**
+	 * 
+	 * @modifies RestaurantDB.users by adding a new user
+	 * @param request
+	 */
 	public static void addUser(String request) {
 		users.put(users.size(), request);
 
 	}
 
+	/**
+	 * @modifies RestaurantDB.reviews by adding a new review
+	 * @param request
+	 */
 	public static void addReview(String request) {
 		reviews.put(reviews.size(), request);
 
 	}
 
+	/**
+	 * 
+	 * @param ID
+	 * @return The restaurant whose ID is the param
+	 */
 	public static String getRestaurant(String ID) {
 		Parser p = new Parser();
 
@@ -344,6 +374,11 @@ public class RestaurantDB {
 		return ("Restaurant Not Found");
 	}
 
+	/**
+	 * 
+	 * @param name
+	 * @return A random review of the restaurant whose name is the param
+	 */
 	public static String getReview(String name) {
 
 		String ID = null;
@@ -385,6 +420,12 @@ public class RestaurantDB {
 		return "Review not Found";
 	}
 
+	/**
+	 * 
+	 * @param min
+	 * @param max
+	 * @return A random number between those two numbers
+	 */
 	public static int randInt(int min, int max) {
 
 		Random rand = null;
@@ -393,28 +434,52 @@ public class RestaurantDB {
 		return randomNum;
 	}
 
+	/**
+	 * 
+	 * @return the size of restaurants
+	 */
 	public static int Restaurantsize() {
 		return restaurants.size();
 	}
 
+	/**
+	 * 
+	 * @return the size of reviews
+	 */
 	public static int Reviewsize() {
 		return reviews.size();
 	}
 
+	/**
+	 * 
+	 * @return the size of users
+	 */
 	public static int Usersize() {
 		return users.size();
 	}
 
+	/**
+	 * 
+	 * @return The hashmap restaurants
+	 */
 	public static HashMap<Integer, String> getRes() {
 		return restaurants;
 
 	}
 
+	/**
+	 * 
+	 * @return the hashmap reviews
+	 */
 	public static HashMap<Integer, String> getReviews() {
 		return reviews;
 
 	}
 
+	/**
+	 * 
+	 * @return the hashmap users
+	 */
 	public static HashMap<Integer, String> getUsers() {
 		return users;
 
