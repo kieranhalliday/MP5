@@ -19,7 +19,7 @@ public class Parser {
 
 	}
 
-	public String getID(String name) {
+	public static String getID(String name) {
 		String ID = null;
 		int start;
 
@@ -33,5 +33,44 @@ public class Parser {
 
 		return ID;
 	}
+	
+	public static double getLongitude(String name){ //x value 
+		String longitude = null;
+		int start,end;
+		
+		for (int i = 0; i < RestaurantDB.Restaurantsize(); i++) {
+			if (RestaurantDB.getRes().get(i).contains(name)) {
+				longitude = RestaurantDB.getRes().get(i);
+				start = longitude.indexOf("longitude");
+				end = longitude.indexOf("neighborhoods");
+				longitude.substring(start + 12, end -3);
+			}
+		}
+
+		return Double.parseDouble(longitude);
+
+	}
+	
+	public static double getLatitude(String name){ //y value 
+		String latitude = null;
+		int start,end;
+		
+		for (int i = 0; i < RestaurantDB.Restaurantsize(); i++) {
+			if (RestaurantDB.getRes().get(i).contains(name)) {
+				latitude = RestaurantDB.getRes().get(i);
+				start = latitude.indexOf("latitude");
+				end = latitude.indexOf("price");
+				latitude.substring(start + 11, end -3);
+			}
+		}
+
+		return Double.parseDouble(latitude);
+
+	}
+		
+		
+
 
 }
+
+

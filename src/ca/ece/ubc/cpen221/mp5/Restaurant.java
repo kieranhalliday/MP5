@@ -14,4 +14,8 @@ public class Restaurant {
 	public Restaurant(String strings){
 		this.name=strings;
 	}
+	
+	public String getName(){
+		return this.name;
+	}
 }

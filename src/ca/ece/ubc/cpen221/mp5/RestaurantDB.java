@@ -12,7 +12,7 @@ import java.util.Set;
 // state the rep invariant and the abstraction function.
 
 public class RestaurantDB {
-	private static HashMap<Integer, String> restaurants;
+	public static HashMap<Integer, String> restaurants;
 	private static HashMap<Integer, String> reviews;
 	private static HashMap<Integer, String> users;
 
