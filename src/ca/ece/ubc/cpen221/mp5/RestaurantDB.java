@@ -1,6 +1,7 @@
 package ca.ece.ubc.cpen221.mp5;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,7 +51,7 @@ public class RestaurantDB {
 	 *          reviews and the restaurants and the users
 	 */
 	public RestaurantDB(String restaurantJSONfilename, String reviewsJSONfilename, String usersJSONfilename) {
-		// Currently this method has one entry per every JSON entry, no
+		// Currently each Map has one entry per every JSON entry, no
 		// seperation of each field
 
 		HashMap<Integer, String> restaurants = new HashMap<Integer, String>();
@@ -72,7 +73,6 @@ public class RestaurantDB {
 	 *             if queryString is malformed
 	 */
 
-	// TODO Parse query compare to restaurants hashmap
 	// Cannot handle || yet
 	// To handle || and &&, go through string first and assign a 0 for AND and a
 	// 1 for OR
@@ -85,6 +85,8 @@ public class RestaurantDB {
 		ArrayList<Integer> andOrlist = new ArrayList<Integer>();
 		ArrayList<String> commands = new ArrayList<String>();
 
+		// These arraylists hold the restaurants that sastify at least
+		// one area of the query
 		ArrayList<Restaurant> location = new ArrayList<Restaurant>();
 		ArrayList<Restaurant> categories = new ArrayList<Restaurant>();
 		ArrayList<Restaurant> names = new ArrayList<Restaurant>();
@@ -164,45 +166,259 @@ public class RestaurantDB {
 	}
 
 	/**
-	 * This method goes through a2 and checks if it exists in a1, a3, a4, and a5
-	 * If yes, it add it to the destination List
+	 * Objective of this method is to take the lists of restaurants that satisfy
+	 * at least one portion of the query and figure out how to combine them in a
+	 * way that satifies the client's request
 	 *
-	 * @param a1
-	 * @param a2
-	 * @param a3
-	 * @param a4
-	 * @param a5
+	 * @param Five
+	 *            array lists holding the restaurants that satisfy at least one
+	 *            portion of the query
 	 * @param destination
+	 *            set to be returned to the client
 	 */
+	// TODO implement this method,
+	// you have an array of commands and an array of and/or's
+	// you also have every restaurant that satisfied at least one of the query
+	// requirements
+
 	public void addtoArray(ArrayList<Restaurant> prices, ArrayList<Restaurant> ratings, ArrayList<Restaurant> names,
-			ArrayList<Restaurant> categories, ArrayList<Restaurant> location, Set<Restaurant> results, ArrayList<Integer> andOR,
-			ArrayList<String> commands) {
-		int currentANDOR;
-		//If commands has a || or && symbol split it up and add it to the arraylist
+			ArrayList<Restaurant> categories, ArrayList<Restaurant> location, Set<Restaurant> results,
+			ArrayList<Integer> andOR, ArrayList<String> commands) {
+
+		int counter;
+		// If commands has a || or && symbol split it up and add it to the
+		// arraylist
 		// in the same place
 		// 1 is OR
 
-		for (int counter = 0; counter < prices.size(); counter++) {
-			currentANDOR=andOR.get(counter);
-			
-			if (commands.get(counter).contains("in")) {
-				//GET wanted location, check all maps to see if it is there
-				//if current command is OR, add it
-				// if current command is AND, put true into arraylist but dont move onto next command until 2 cycles
-				if(currentANDOR ==1){
-				}else{
-					
+		// Figure out which commands are ANDed
+		// TODO changes length of for loop
+		for (counter = 0; counter < prices.size(); counter++) {
+			if (andOR.get(counter) == 0) {
+				if (commands.get(counter).contains("in")) {
+					if (commands.get(counter).contains("price")) {
+						// Cycle through and get res in both
+						for (int counter1 = 0; counter1 < location.size(); counter1++) {
+							if (location.contains(prices.get(counter1))) {
+								results.add(prices.get(counter1));
+							}
+						}
+					}
+					if (commands.get(counter).contains("rating")) {
+						// Cycle through and get res in both
+						for (int counter1 = 0; counter1 < location.size(); counter1++) {
+							if (location.contains(ratings.get(counter1))) {
+								results.add(ratings.get(counter1));
+							}
+						}
+					}
+					if (commands.get(counter).contains("name")) {
+						// Cycle through and get res in both
+						for (int counter1 = 0; counter1 < location.size(); counter1++) {
+							if (location.contains(names.get(counter1))) {
+								results.add(names.get(counter1));
+							}
+						}
+					}
+					if (commands.get(counter).contains("category")) {
+						// Cycle through and get res in both
+						for (int counter1 = 0; counter1 < location.size(); counter1++) {
+							if (location.contains(categories.get(counter1))) {
+								results.add(categories.get(counter1));
+							}
+						}
+					}
+
+					// BREAK
+
+				} else if (commands.get(counter).contains("price")) {
+					if (commands.get(counter).contains("in")) {
+						// Cycle through and get res in both
+						for (int counter1 = 0; counter1 < prices.size(); counter1++) {
+							if (prices.contains(location.get(counter1))) {
+								results.add(location.get(counter1));
+							}
+						}
+					}
+					if (commands.get(counter).contains("rating")) {
+						// Cycle through and get res in both
+						for (int counter1 = 0; counter1 < prices.size(); counter1++) {
+							if (prices.contains(ratings.get(counter1))) {
+								results.add(ratings.get(counter1));
+							}
+						}
+					}
+					if (commands.get(counter).contains("name")) {
+						// Cycle through and get res in both
+						for (int counter1 = 0; counter1 < prices.size(); counter1++) {
+							if (prices.contains(names.get(counter1))) {
+								results.add(names.get(counter1));
+							}
+						}
+					}
+					if (commands.get(counter).contains("category")) {
+						// Cycle through and get res in both
+						for (int counter1 = 0; counter1 < prices.size(); counter1++) {
+							if (prices.contains(categories.get(counter1))) {
+								results.add(categories.get(counter1));
+							}
+						}
+					}
+
+					// BREAK
+
+				} else if (commands.get(counter).contains("rating")) {
+					if (commands.get(counter).contains("in")) {
+						// Cycle through and get res in both
+						for (int counter1 = 0; counter1 < ratings.size(); counter1++) {
+							if (ratings.contains(location.get(counter1))) {
+								results.add(location.get(counter1));
+							}
+						}
+					}
+					if (commands.get(counter).contains("price")) {
+						// Cycle through and get res in both
+						for (int counter1 = 0; counter1 < ratings.size(); counter1++) {
+							if (ratings.contains(prices.get(counter1))) {
+								results.add(prices.get(counter1));
+							}
+						}
+					}
+					if (commands.get(counter).contains("name")) {
+						// Cycle through and get res in both
+						for (int counter1 = 0; counter1 < ratings.size(); counter1++) {
+							if (ratings.contains(names.get(counter1))) {
+								results.add(names.get(counter1));
+							}
+						}
+					}
+					if (commands.get(counter).contains("category")) {
+						// Cycle through and get res in both
+						for (int counter1 = 0; counter1 < ratings.size(); counter1++) {
+							if (ratings.contains(categories.get(counter1))) {
+								results.add(categories.get(counter1));
+							}
+						}
+					}
 				}
 
-				
-			} else if (commands.get(counter).contains("category")) {
-				//GET wanted category, check all maps to see if it is there
-			} else if (commands.get(counter).contains("name")) {
-				//GET wanted name, check all maps to see if it is there
-			} else if (commands.get(counter).contains("rating")) {
-				//GET wanted rating, check all maps to see if it is there
-			} else if (commands.get(counter).contains("price")) {
-				//GET wanted price, check all maps to see if it is there
+				// BREAK
+
+				else if (commands.get(counter).contains("name")) {
+					if (commands.get(counter).contains("in")) {
+						// Cycle through and get res in both
+						for (int counter1 = 0; counter1 < names.size(); counter1++) {
+							if (names.contains(location.get(counter1))) {
+								results.add(location.get(counter1));
+							}
+						}
+					}
+					if (commands.get(counter).contains("price")) {
+						// Cycle through and get res in both
+						for (int counter1 = 0; counter1 < names.size(); counter1++) {
+							if (names.contains(prices.get(counter1))) {
+								results.add(prices.get(counter1));
+							}
+						}
+					}
+					if (commands.get(counter).contains("rating")) {
+						// Cycle through and get res in both
+						for (int counter1 = 0; counter1 < names.size(); counter1++) {
+							if (names.contains(ratings.get(counter1))) {
+								results.add(ratings.get(counter1));
+							}
+						}
+					}
+					if (commands.get(counter).contains("category")) {
+						// Cycle through and get res in both
+						for (int counter1 = 0; counter1 < names.size(); counter1++) {
+							if (names.contains(categories.get(counter1))) {
+								results.add(categories.get(counter1));
+							}
+						}
+					}
+				}
+
+				// BREAK
+
+				else if (commands.get(counter).contains("category")) {
+					if (commands.get(counter).contains("in")) {
+						// Cycle through and get res in both
+						for (int counter1 = 0; counter1 < categories.size(); counter1++) {
+							if (categories.contains(location.get(counter1))) {
+								results.add(location.get(counter1));
+							}
+						}
+					}
+					if (commands.get(counter).contains("price")) {
+						// Cycle through and get res in both
+						for (int counter1 = 0; counter1 < categories.size(); counter1++) {
+							if (categories.contains(prices.get(counter1))) {
+								results.add(prices.get(counter1));
+							}
+						}
+					}
+					if (commands.get(counter).contains("rating")) {
+						// Cycle through and get res in both
+						for (int counter1 = 0; counter1 < categories.size(); counter1++) {
+							if (categories.contains(ratings.get(counter1))) {
+								results.add(ratings.get(counter1));
+							}
+						}
+					}
+					if (commands.get(counter).contains("name")) {
+						// Cycle through and get res in both
+						for (int counter1 = 0; counter1 < categories.size(); counter1++) {
+							if (categories.contains(names.get(counter1))) {
+								results.add(names.get(counter1));
+							}
+						}
+					}
+				}
+			} else if (andOR.get(counter) == 1) {
+				if (commands.get(counter).contains("in")) {
+					for (int counter2 = 0; counter2 < location.size(); counter2++) {
+						results.add(location.get(counter2));
+					}
+				} else if (commands.get(counter).contains("rating")) {
+					for (int counter2 = 0; counter2 < ratings.size(); counter2++) {
+						results.add(ratings.get(counter2));
+					}
+				} else if (commands.get(counter).contains("name")) {
+					for (int counter2 = 0; counter2 < names.size(); counter2++) {
+						results.add(names.get(counter2));
+					}
+				} else if (commands.get(counter).contains("price")) {
+					for (int counter2 = 0; counter2 < prices.size(); counter2++) {
+						results.add(prices.get(counter2));
+					}
+				} else if (commands.get(counter).contains("category")) {
+					for (int counter2 = 0; counter2 < categories.size(); counter2++) {
+						results.add(categories.get(counter2));
+					}
+				}
+				if (commands.get(counter + 1).contains("in")) {
+					for (int counter2 = 0; counter2 < location.size(); counter2++) {
+						results.add(location.get(counter2));
+					}
+				} else if (commands.get(counter + 1).contains("rating")) {
+					for (int counter2 = 0; counter2 < ratings.size(); counter2++) {
+						results.add(ratings.get(counter2));
+					}
+				} else if (commands.get(counter + 1).contains("name")) {
+					for (int counter2 = 0; counter2 < names.size(); counter2++) {
+						results.add(names.get(counter2));
+					}
+				} else if (commands.get(counter + 1).contains("price")) {
+					for (int counter2 = 0; counter2 < prices.size(); counter2++) {
+						results.add(prices.get(counter2));
+					}
+				} else if (commands.get(counter + 1).contains("category")) {
+					for (int counter2 = 0; counter2 < categories.size(); counter2++) {
+						results.add(categories.get(counter2));
+					}
+				}
+
 			}
 		}
 	}
@@ -213,7 +429,7 @@ public class RestaurantDB {
 	 */
 	public static void addRestaurant(String request) {
 		synchronized (restaurantLock) {
-			restaurants.put(restaurants.size(), request);
+			restaurants.put(restaurants.size(), "name:" + request + ", " + "'categories'");
 		}
 	}
 
@@ -233,7 +449,7 @@ public class RestaurantDB {
 	 */
 	public static void addReview(String request) {
 		synchronized (reviewsLock) {
-			reviews.put(reviews.size(), request);
+			reviews.put(reviews.size(), "text" + ":" + request);
 		}
 
 	}
@@ -272,17 +488,16 @@ public class RestaurantDB {
 		}
 		for (int j = 0; j < reviews.size(); j++) {
 			double randomnum = randInt();
-			if (reviews.get(j).contains(ID) && randomnum > 0.66) {
+			if (reviews.get(j).contains(ID) && randomnum > 0.85) {
 				start = ID.indexOf("text:");
-				ID.substring(start + 9);
 				end = ID.indexOf("stars");
-				review = ID.substring(0, end - 4);
+				review = ID.substring(start + 9, end - 4);
 
 				return review;
 			}
 		}
 
-		// Try twice for good measure
+		// Try twice for good measure, easier to get it
 		for (int k = 0; k < reviews.size(); k++) {
 			double randomnum = randInt();
 			if (reviews.get(k).contains(ID) && randomnum > 0.66) {
@@ -374,8 +589,12 @@ public class RestaurantDB {
 		String line = null;
 		int nextChar, i = 0;
 		// Create restaurant hashmap
+		File res = new File("C:/School/CPEN221/Workspace/mp5-fall2015/data/restaurants.json");
+		File rev= new File("C:/School/CPEN221/Workspace/mp5-fall2015/data/reviews.json");
+		File use = new File("C:/School/CPEN221/Workspace/mp5-fall2015/data/users.json");
+		
 		try {
-			FileReader filereader = new FileReader(restaurantJSONfilename);
+			FileReader filereader = new FileReader(res);
 			BufferedReader reader = new BufferedReader(filereader);
 
 			while ((line = reader.readLine()) != null) {
@@ -398,7 +617,7 @@ public class RestaurantDB {
 		try {
 			String holder;
 			String replacer;
-			FileReader filereader1 = new FileReader(reviewsJSONfilename);
+			FileReader filereader1 = new FileReader(rev);
 			BufferedReader reader1 = new BufferedReader(filereader1);
 			StringBuilder SB = new StringBuilder();
 
@@ -429,7 +648,7 @@ public class RestaurantDB {
 
 		// Create users hashmap
 		try {
-			FileReader filereader2 = new FileReader(usersJSONfilename);
+			FileReader filereader2 = new FileReader(use);
 			BufferedReader reader2 = new BufferedReader(filereader2);
 
 			while ((line = reader2.readLine()) != null) {
@@ -454,7 +673,7 @@ public class RestaurantDB {
 		// Range of price and rating
 		int upperbounds, lowerbounds;
 		Parser p = new Parser();
-		String sample = queryString;
+		String sample1, sample = queryString;
 
 		// Check location
 		if (sample.contains("in")) {
@@ -475,19 +694,24 @@ public class RestaurantDB {
 
 		// Check categories
 
-		if (sample.contains("category")) {
-			n = sample.indexOf("category");
-			sample.substring(n + 10);
-			sample.split(")", 1);
+		do {
+			if (sample.contains("category")) {
+				sample1 = sample;
+				n = sample.indexOf("category");
+				sample.substring(n + 10);
+				sample.split(")", 1);
 
-			for (int i = 0; i < restaurants.size(); i++) {
-				if (restaurants.get(i).contains(sample)) {
-					String k = p.getName(restaurants.get(i));
-					Restaurant temp = new Restaurant(k);
-					categories.add(temp);
+				for (int i = 0; i < restaurants.size(); i++) {
+					if (restaurants.get(i).contains(sample)) {
+						String k = p.getName(restaurants.get(i));
+						Restaurant temp = new Restaurant(k);
+						categories.add(temp);
+					}
 				}
+				sample1.substring(n + 10);
+				sample = sample1;
 			}
-		}
+		} while (sample.contains("category"));
 		sample = queryString;
 
 		// Check name
@@ -644,5 +868,14 @@ public class RestaurantDB {
 
 		}
 
+	}
+
+	public static void main(String[] args) {
+		try{
+			RestaurantDBServer server = new RestaurantDBServer(4950,"restaurants.json","reviews.json", "users.json");
+			server.serve();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 }

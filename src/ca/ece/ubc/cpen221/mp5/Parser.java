@@ -1,5 +1,10 @@
 package ca.ece.ubc.cpen221.mp5;
 
+/**
+ * This class is used to preform common parsing tasks in 
+ * other classes
+ */
+
 public class Parser {
 
 	/**

@@ -8,7 +8,6 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-// TODO: REP invariant, ABSTRACTION fxn
 /**
  * 
  * Abstraction Function: This class implements a server
@@ -23,6 +22,9 @@ public class RestaurantDBServer implements Runnable {
 
 	private int port;
 	private ServerSocket ssocket;
+	private String restaurant;
+	private String user;
+	private String review;
 
 	/**
 	 * Constructor
@@ -35,6 +37,9 @@ public class RestaurantDBServer implements Runnable {
 	 */
 	public RestaurantDBServer(int port, String filename1, String filename2, String filename3) throws IOException {
 		this.port = port;
+		this.restaurant=filename1;
+		this.user=filename2;
+		this.review=filename3;
 		ssocket = new ServerSocket(port);
 
 	}
@@ -63,6 +68,8 @@ public class RestaurantDBServer implements Runnable {
 	 *  the reading or writing or connecting
 	 */
 	public void serve() throws IOException {
+		RestaurantDB DB = new RestaurantDB(this.restaurant,this.user,this.review);
+		
 		while (true) {
 			// Block until a client connects
 			final Socket sock = ssocket.accept();

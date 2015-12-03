@@ -1,7 +1,5 @@
 package ca.ece.ubc.cpen221.mp5;
 //TODO CHECK NUMBERS IN SUBSTRINGS
-// WHAT IF THEY REQUEST A RESTAURANT THEY ADDED AND THE JSON STRING ISN'T FORMULATED THE SAME,
-// ADD ALL THE JSON FIELDS ANYWAYS?
 
 /**
  * This class dictates the protocol the clients and server will use
