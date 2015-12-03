@@ -1,11 +1,29 @@
 package ca.ece.ubc.cpen221.mp5;
+//TODO CHECK NUMBERS IN SUBSTRINGS
+// WHAT IF THEY REQUEST A RESTAURANT THEY ADDED AND THE JSON STRING ISN'T FORMULATED THE SAME,
+// ADD ALL THE JSON FIELDS ANYWAYS?
 
+/**
+ * This class dictates the protocol the clients and server will use
+ * 
+ * @THREAD_SAFETY_ARGUMENT: None of these methods modify any of the DB themselves
+ *   Ones that call mutator methods only call the mutator methods from ResDB that have
+ *   locks.
+ *   
+ *   @REP_INVARIANT: Any string is a valid input into this class but the class itself doesn't have
+ *    any values.
+ *   
+ *   @ABSTRACTION_FUNCTION: This call represents a protocol, it dictates the responses
+ *    the server will give based on predefined client requests.
+ */
 public class Protocol {
 
 	/**
 	 * This method is what takes a client's request and formulates the correct
 	 * response
-	 * @param request
+	 * 
+	 * @param request,
+	 *            given from the client, received from RestaurantDBServer
 	 * @return The String to be given to the client
 	 */
 
@@ -20,7 +38,7 @@ public class Protocol {
 			result = RestaurantDB.getReview(name);
 
 			if (result.equalsIgnoreCase("Review Not Found")) {
-				return "Review Not Found";
+				return "Review Not Found or Malformed Request";
 			} else {
 				return result;
 			}
@@ -31,14 +49,14 @@ public class Protocol {
 			result = RestaurantDB.getRestaurant(businessID);
 
 			if (result.equalsIgnoreCase("Restaurant Not Found")) {
-				return "Restaurant Not Found";
+				return "Restaurant Not Found or Malformed Request";
 			} else {
 				return result;
 			}
 
 			// If the client requests to add a restaurant
 		} else if (request.contains("addRestaurant")) {
-			// Minus two because you should take one off to avoid string out
+			// Minus 2 because you should take 3 off to avoid string out
 			// of bounds and then take off " and )but substring does one for you
 			name = request.substring(15, request.length() - 2);
 			RestaurantDB.addRestaurant(name);
@@ -58,7 +76,7 @@ public class Protocol {
 
 		}
 
-		//Otherwise the string cannot be dealt with
+		// Otherwise the string cannot be dealt with
 		return "Invalid String";
 	}
 
