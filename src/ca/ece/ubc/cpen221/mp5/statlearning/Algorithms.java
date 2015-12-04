@@ -18,8 +18,8 @@ public class Algorithms {
 		List<Point> points = new ArrayList<Point>();
 		List<Cluster> cluster = new ArrayList<Cluster>();
 		boolean finished = false;
-		Set<Restaurant> restaurantCluster;
-		List<Set<Restaurant>> allclusters;
+		
+		List<Set<Restaurant>> allClusters = new ArrayList<Set<Restaurant>>();
 		
 		for (int i = 1; i<=k; i++){
 			cluster.add(new Cluster(i));
@@ -59,9 +59,17 @@ public class Algorithms {
 				finished = true;
 			}
 		}
+		Set<Restaurant> restaurantCluster = new HashSet <Restaurant>();
+		for (int p = 0; p<cluster.size();p++ ){
+			restaurantCluster.clear();
+			for (int d = 0; d<cluster.get(p).getPoints().size();d++){
+				restaurantCluster.add(new Restaurant(Parser.getNamefromID(cluster.get(p).getPoints().get(d).getID())));
+			}
+			allClusters.add(restaurantCluster);
+		}
 		
 		
-		return null;
+		return allClusters;
 	}
 
 	public static String convertClustersToJSON(List<Set<Restaurant>> clusters) {

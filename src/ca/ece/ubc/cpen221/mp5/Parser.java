@@ -7,7 +7,7 @@ public class Parser {
 		int start, end;
 		
 		for (int i = 0; i < RestaurantDB.Restaurantsize(); i++) {
-			if (RestaurantDB.getRes().get(i).contains(name)) {
+			if (RestaurantDB.getRes().get(i).contains(jsonString)) {
 				name = RestaurantDB.getRes().get(i);
 				start = name.indexOf("name");
 				end = name.indexOf("categories");
@@ -68,7 +68,21 @@ public class Parser {
 
 	}
 		
-		
+	public static String getNamefromID(String ID) {
+		String name = null;
+		int start,end;
+
+		for (int i = 0; i < RestaurantDB.Restaurantsize(); i++) {
+			if (RestaurantDB.getRes().get(i).contains(ID)) {
+				name = RestaurantDB.getRes().get(i);
+				start = name.indexOf("name");
+				end = name.indexOf("categories");
+				name.substring(start + 8, end -4);
+			}
+		}
+
+		return name;
+	}	
 
 
 }

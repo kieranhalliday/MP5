@@ -33,16 +33,14 @@ public class Cluster {
 		double x;
 		double y;
 		
-		totalX += this.centroid.getX();
-		totalY += this.centroid.getY();
 		
 		for (int i = 0; i<conPoints.size(); i++){
 			totalX += conPoints.get(i).getX();
 			totalY += conPoints.get(i).getY();
 		}
 		
-		x = totalX/(conPoints.size()+1);
-		y = totalY/(conPoints.size()+1);
+		x = totalX/(conPoints.size());
+		y = totalY/(conPoints.size());
 		
 		this.centroid = new Centroid(x,y);
 	

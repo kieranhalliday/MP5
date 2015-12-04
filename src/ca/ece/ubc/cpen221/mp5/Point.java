@@ -37,6 +37,10 @@ public class Point {
 		return this.y;
 	}
 	
+	public String getID(){
+		return this.ID;
+	}
+	
 	public void attachToCluster (int clusterID){
 		this.cluster = clusterID;
 	}
