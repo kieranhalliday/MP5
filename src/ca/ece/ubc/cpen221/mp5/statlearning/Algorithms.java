@@ -1,7 +1,7 @@
 package ca.ece.ubc.cpen221.mp5.statlearning;
 
 import java.util.*;
-import java.util.List;
+
 import ca.ece.ubc.cpen221.mp5.*;
 
 public class Algorithms {
@@ -72,15 +72,61 @@ public class Algorithms {
 	}
 
 	public static String convertClustersToJSON(List<Set<Restaurant>> clusters) {
-		// TODO: Implement this method
+		String allClusters;
+		String cluster;
+		String Point;
+		
+		for (int i =0; i<clusters.size();i++){
+			for (int j =0; j< clusters.get(i).size();j++){
+				Point = "{'x': " + parseString(Parser.getLongitude(( clusters.get(i)).get(j)/*WHY DID WE HAVE TO USE A SET AND NOT A LIST >:(*/.getName()));
+			}
+		}
+		
 		return null;
+		
+		
 	}
 
 	public static MP5Function getPredictor(User u, RestaurantDB db, MP5Function featureFunction) {
-		MP5Function getPredictor{
-			
+		
+		MP5Function LinearRegressionFunction;
+		
+		
+		
+		List<Double> dep = new ArrayList<Double>();
+		List<Double> indep = new ArrayList <Double>();
+		
+		for(int i =0; i<RestaurantDB.Reviewsize(); i++){
+			if(RestaurantDB.getReviews().get(i).contains(u.getName())){
+				dep.add(Parser.getStars())
+			}
 		}
-		return null;
+		
+		double sumX = 0;
+		double sumY = 0;
+		double sumXX = 0;
+		double sumXY = 0;
+		double b;
+		double a;
+		double r2;
+		
+	
+		for (int i = 0; i< dep.size(); i++){
+			sumX += dep.get(i);
+			sumY += indep.get(i);
+			sumXX += (dep.get(i)*dep.get(i));
+			sumXY += (dep.get(i)*indep.get(i));
+		}
+		
+		b = (((dep.size()*sumXY)-(sumX*sumY))/((dep.size()*sumXX)-(sumX*sumX)));
+		
+	
+		
+		
+			
+		
+		
+		return LinearRegressionFunction.LinearRegressionFunction(a,b,r2,featureFunction);
 	}
 
 	public static MP5Function getBestPredictor(User u, RestaurantDB db, List<MP5Function> featureFunctionList) {
@@ -129,4 +175,7 @@ public class Algorithms {
 		
 		return y;
 	}
+}
 
+
+	

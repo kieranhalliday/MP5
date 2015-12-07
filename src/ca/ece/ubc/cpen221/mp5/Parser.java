@@ -2,6 +2,42 @@ package ca.ece.ubc.cpen221.mp5;
 
 public class Parser {
 
+	
+	public double getStars(String jsonString){
+		String Stars = null;
+		int start;
+		
+		for (int i = 0; i < RestaurantDB.Reviewsize(); i++) {
+			if (RestaurantDB.getReviews().get(i).contains(jsonString)) {
+				Stars = RestaurantDB.getRes().get(i);
+				start = Stars.indexOf("stars");
+				Stars.substring(start + 8, start +9);
+			}
+		}
+
+		return Double.parseDouble(Stars);
+
+	}
+
+	public String getUserID(String jsonString){
+		String UserID = null;
+		int start,end;
+		
+		for (int i = 0; i < RestaurantDB.Reviewsize(); i++) {
+			if (RestaurantDB.getReviews().get(i).contains(jsonString)) {
+				UserID = RestaurantDB.getRes().get(i);
+				start = UserID.indexOf("user_id");
+				end = UserID.indexOf("date");
+				UserID.substring(start + 11, end - 4);
+			}
+		}
+
+		return UserID;
+
+	}	
+		
+
+	
 	public String getName(String jsonString) {
 		String name = null;
 		int start, end;
