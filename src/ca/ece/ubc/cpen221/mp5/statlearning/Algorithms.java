@@ -14,7 +14,6 @@ public class Algorithms {
 	 * @return
 	 */
 	public static List<Set<Restaurant>> kMeansClustering(int k, RestaurantDB db) {
-		//TODO
 		List<Point> points = new ArrayList<Point>();
 		List<Cluster> cluster = new ArrayList<Cluster>();
 		boolean finished = false;
@@ -78,7 +77,9 @@ public class Algorithms {
 	}
 
 	public static MP5Function getPredictor(User u, RestaurantDB db, MP5Function featureFunction) {
-		// TODO: Implement this method
+		MP5Function getPredictor{
+			
+		}
 		return null;
 	}
 
@@ -86,4 +87,46 @@ public class Algorithms {
 		// TODO: Implement this method
 		return null;
 	}
-}
+
+	public double LeastSquareSlope (List<double> dep, List<double> indep){
+		double sumX = 0;
+		double sumY = 0;
+		double sumXX = 0;
+		double sumXY = 0;
+		double slope;
+		
+	
+		for (int i = 0; i< dep.size(); i++){
+			sumX += dep.get(i);
+			sumY += indep.get(i);
+			sumXX += (dep.get(i)*dep.get(i));
+			sumXY += (dep.get(i)*indep.get(i));
+		}
+		
+		slope = (((dep.size()*sumXY)-(sumX*sumY))/((dep.size()*sumXX)-(sumX*sumX)));
+		return slope;
+	
+	}
+	public double LeastSquareIntercept (List<double> dep, List<double> indep, double slope){
+		double sumX = 0;
+		double sumY = 0;
+		double intercept;
+	
+		for (int i = 0; i< dep.size(); i++){
+			sumX += dep.get(i);
+			sumY += indep.get(i);
+		}
+		
+		intercept = (sumY-(slope*sumX))/(dep.size())
+		return intercept;		
+				
+	}
+	
+	public double plugIn (double slope, double intercept, double x){
+		double y;
+		
+		y = intercept + (slope*x);
+		
+		return y;
+	}
+

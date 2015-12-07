@@ -83,8 +83,58 @@ public class Parser {
 
 		return name;
 	}	
+	
+	
+	public static String getRating(String name) {
+		String rating = null;
+		int start;
+
+		for (int i = 0; i < RestaurantDB.Restaurantsize(); i++) {
+			if (RestaurantDB.getRes().get(i).contains(name)) {
+				rating = RestaurantDB.getRes().get(i);
+				start = rating.indexOf("stars");
+				rating.substring(start + 8, start + 11);
+			}
+		}
+
+		return rating;
+	}
+	
+	public static String getPrice(String name) {
+		String price = null;
+		int start;
+
+		for (int i = 0; i < RestaurantDB.Restaurantsize(); i++) {
+			if (RestaurantDB.getRes().get(i).contains(name)) {
+				price = RestaurantDB.getRes().get(i);
+				start = price.indexOf("price");
+				price.substring(start + 8, start + 9);
+			}
+		}
+
+		return price;
+	}
+	
+	public static String getCategory(String name) {
+		String category = null;
+		int start;
+		int end;
+
+		for (int i = 0; i < RestaurantDB.Restaurantsize(); i++) {
+			if (RestaurantDB.getRes().get(i).contains(name)) {
+				category = RestaurantDB.getRes().get(i);
+				start = category.indexOf("category");
+				end  = category.indexOf("state");
+				category.substring(start + 15, end -5);
+			}
+		}
+
+		return category;
+	}
 
 
 }
+
+
 
 
